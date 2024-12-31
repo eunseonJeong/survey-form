@@ -1,9 +1,7 @@
-import { SurveyForm } from "@/app/_components/survey-form";
-
 export default function Home() {
   return (
-    <div>
-      <SurveyForm />
+    <div className={"flex items-center justify-center h-screen"}>
+      안녕하세요. 서베이입니다.
     </div>
   );
 }

@@ -1,37 +1,27 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
-type QuestionType = "text" | "choice";
-
 interface Question {
-  id: number;
+  id: string;
   text: string;
-  type: QuestionType;
+  type: "text" | "choice";
   choices?: string[];
 }
 
-const questions: Question[] = [
-  { id: 1, text: "당신의 이름은 무엇인가요?", type: "text" },
-  {
-    id: 2,
-    text: "당신의 나이대는 어떻게 되나요?",
-    type: "choice",
-    choices: ["10대", "20대", "30대", "40대", "50대 이상"],
-  },
-  {
-    id: 3,
-    text: "이 설문 조사에 대해 어떻게 생각하시나요?",
-    type: "choice",
-    choices: ["매우 좋음", "좋음", "보통", "나쁨", "매우 나쁨"],
-  },
-  // 더 많은 질문을 추가할 수 있습니다.
-];
-
-export const SurveyForm = () => {
+export default function SurveyPage() {
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const storedQuestions = localStorage.getItem("surveyQuestions");
+    if (storedQuestions) {
+      setQuestions(JSON.parse(storedQuestions));
+    }
+  }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -48,6 +38,9 @@ export const SurveyForm = () => {
   const handleAnswer = (answer: string) => {
     setAnswers({ ...answers, [currentQuestion.id]: answer });
   };
+
+  if (questions.length === 0) return <div>설문 문항이 없습니다.</div>;
+  if (!currentQuestion) return <div>Loading...</div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -91,4 +84,4 @@ export const SurveyForm = () => {
       </div>
     </div>
   );
-};
+}
