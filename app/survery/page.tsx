@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 interface Question {
   id: string;
@@ -15,6 +16,7 @@ export default function SurveyPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   useEffect(() => {
     const storedQuestions = localStorage.getItem("surveyQuestions");
@@ -29,6 +31,7 @@ export default function SurveyPage() {
   const handleNext = () => {
     if (isLastQuestion) {
       console.log("Survey completed:", answers);
+      router.push("/survery/success");
       // 여기에 제출 로직을 추가할 수 있습니다.
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
