@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type Prize = {
@@ -13,6 +14,8 @@ type Prize = {
 
 //가챠를 등록하는 확률 페이지
 const ProductPage = () => {
+  const router = useRouter();
+
   const [prizes, setPrizes] = useState<Prize[]>([
     { name: "", probability: "" },
   ]);
@@ -132,6 +135,13 @@ const ProductPage = () => {
             </ul>
           )}
         </div>
+        <Button
+          type="button"
+          onClick={() => router.push("/admin/link")}
+          className="w-full mt-6 bg-orange-400 hover:bg-orange-300"
+        >
+          다음
+        </Button>
       </CardContent>
     </Card>
   );
